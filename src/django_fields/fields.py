@@ -8,10 +8,21 @@ from django import forms
 from django.forms import fields
 from django.db import models
 from django.conf import settings
-from django.utils.encoding import smart_str, force_unicode
 from django.utils.translation import ugettext_lazy as _
 from Crypto import Random
 from Crypto.Random import random
+
+# Hack for Django 1.8 support
+# https://docs.djangoproject.com/en/1.8/topics/python3/#string-handling
+try:
+    from django.utils.encoding import smart_str
+except ImportError:
+    from django.utils.encoding import smart_bytes as smart_str
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    from django.utils.encoding import force_text as force_unicode
+
 
 if hasattr(settings, 'USE_CPICKLE'):
     warnings.warn(
